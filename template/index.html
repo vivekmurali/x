@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://cdn.jsdelivr.net/gh/supertokens/supertokens-website/bundle/bundle.js"></script>
+		<title>HELLO</title>
+	</head>
+
+	<body>
+		TEST
+		<button id="login-btn">Sign into google</button>
+	</body>
+
+</html>
+
+<script>
+	supertokens.init({
+		apiDomain: "http://localhost:3000",
+		apiBasePath: "/",
+	});
+
+	document.getElementById("login-btn").onclick = async () => {
+		// console.log("Clicked button")
+
+
+		const response = await fetch(
+			"http://localhost:3000/auth/authorisationurl?thirdPartyId=google",
+			{
+				method: "GET",
+				headers: {
+					rid: "thirdparty",
+				},
+			}
+		);
+
+		res = await response.json()
+		console.log(res)
+		let urlObj = new URL(res.url);
+
+		urlObj.searchParams.append(
+			"redirect_uri",
+			"http://localhost:3000/auth/callback/google"
+		);
+
+		let url = urlObj.toString();
+
+		console.log(url)
+		window.location.href = url	
+	}
+</script>
